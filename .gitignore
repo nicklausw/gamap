@@ -1,0 +1,6 @@
+**/.jank-repl-history
+**/symbology-style.db
+target/
+.lsp/
+.clj-kondo/.cache/
+.nrepl-port

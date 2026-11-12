@@ -1,0 +1,41 @@
+(ns gamap.main
+  (:include "qgsapplication.h"
+            "qgsmapcanvas.h"
+            "qgsvectorlayer.h"
+            "qgsproject.h"))
+
+(cpp/raw
+ "class QgsJank : public QgsApplication {
+    private:
+    int m_argc = 0;
+
+    public:
+    void setCanvasLayers(QgsMapCanvas *canvas, QgsVectorLayer *layer) {
+      canvas->setLayers(QList<QgsMapLayer*>() << layer);
+    }
+    QgsJank() : QgsApplication(m_argc, nullptr, true) { }
+  };")
+
+
+(defn -main [& args]
+  (let [app (cpp/QgsJank.)
+        canvas (cpp/QgsMapCanvas.)
+        shape-loc "data/Georgia_Counties.shp"
+        vec-layer (cpp/QgsVectorLayer. shape-loc "My Shapefile" "ogr")]
+    (cpp/QgsApplication.setPrefixPath "/usr" true)
+    (cpp/QgsApplication.initQgis)
+    (.addMapLayer (cpp/QgsProject.instance) (cpp/& vec-layer))
+    (doto canvas
+      (.setWindowTitle "Georgia Counties")
+      (.enableAntiAliasing true)
+      (.setCanvasColor (cpp/QColor 20 20 20))
+      (.setDestinationCrs (.crs vec-layer))
+      (.setExtent (.extent vec-layer))
+      (.setLayers (cpp/<< (#cpp (QList (:* QgsMapLayer))) (cpp/& vec-layer)))
+      (.resize 700 500)
+      (.show)
+      (.refresh))
+    (cpp/QgsApplication.exec)))
+
+
+
