@@ -10,9 +10,6 @@
     int m_argc = 0;
 
     public:
-    void setCanvasLayers(QgsMapCanvas *canvas, QgsVectorLayer *layer) {
-      canvas->setLayers(QList<QgsMapLayer*>() << layer);
-    }
     QgsJank() : QgsApplication(m_argc, nullptr, true) { }
   };")
 
