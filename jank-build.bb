@@ -12,8 +12,7 @@
        "/usr/include/qt6/QtCore"
        "/usr/include/qt6/QtGui"
        "/usr/include/qt6/QtWidgets"
-       "/usr/include/qt6/QtXml"
-       "/usr/include/qgis"])
+       "/usr/include/qt6/QtXml"])
 
 (mapv util/link-library
       ["Qt6Core"
